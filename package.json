@@ -1,0 +1,50 @@
+{
+  "name": "side-nav-mini",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~9.1.9",
+    "@angular/cdk": "^9.2.4",
+    "@angular/common": "~9.1.9",
+    "@angular/compiler": "~9.1.9",
+    "@angular/core": "~9.1.9",
+    "@angular/forms": "~9.1.9",
+    "@angular/material": "^9.2.4",
+    "@angular/platform-browser": "~9.1.9",
+    "@angular/platform-browser-dynamic": "~9.1.9",
+    "@angular/router": "~9.1.9",
+    "@turf/turf": "^6.5.0",
+    "@types/leaflet": "^1.9.4",
+    "leaflet": "^1.9.4",
+    "leaflet-extra-markers": "^1.2.2",
+    "leaflet.awesome-markers": "^2.0.5",
+    "leaflet.markercluster": "^1.5.3",
+    "mapbox-gl": "^2.15.0",
+    "maptalks": "^1.0.0-rc.22",
+    "moment": "^2.29.4",
+    "rxjs": "~6.5.4",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.7",
+    "@angular/cli": "~9.1.7",
+    "@angular/compiler-cli": "~9.1.9",
+    "@types/leaflet.awesome-markers": "^2.0.26",
+    "@types/lodash": "^4.14.195",
+    "@types/mapbox-gl": "^2.7.11",
+    "@types/maptalks": "^0.49.2",
+    "@types/node": "^12.11.1",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0",
+    "typescript": "~3.8.3"
+  }
+}
