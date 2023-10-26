@@ -1,0 +1,68 @@
+
+    <section [class.sidenav]="isExpanded">
+   
+          <div class="toggle">
+            <div>
+              <button class="icon-button" (click)="toggleMenu.emit(null)">
+
+                <div *ngIf="!isExpanded">                  
+                   <img class="icon" src="/assets/abm_logo.png" alt="">
+                </div>
+                <div *ngIf="isExpanded">
+                  :<mat-icon>keyboard_backspace</mat-icon>
+                </div>
+                
+            </button>
+              <!-- <mat-icon  (click)="toggleMenu.emit(null)">
+                {{ isExpanded ? "keyboard_backspace" : "dehaze" }}
+              </mat-icon> -->
+            </div>
+            
+          </div>
+          <div class="menuBreak">
+            <hr>
+          </div>
+          <div class="middle">
+            <mat-list class="nav" *ngFor="let route of routeLinks">
+              <a
+                mat-list-item
+                routerLinkActive="active-link"
+                class="hover"
+                routerLink="{{ route.link }}"
+              >
+                <mat-icon
+                  mat-list-icon
+                  [matTooltip]="!isExpanded ? route.name : null"
+                  matTooltipPosition="right"
+                >
+                  {{ route.icon }}</mat-icon
+                >
+                <!-- <p matLine *ngIf="isExpanded">{{ route.name }}</p> -->
+              </a>
+            </mat-list>
+          </div>
+          
+          <div class="bottom">
+            <mat-list class="nav" *ngFor="let items of tools" >
+              <a
+                mat-list-item
+                routerLinkActive="active-link"
+                routerLink="{{ items.link }}"
+                class="hover">
+                <mat-icon 
+                mat-list-icon
+                [matTooltip]="!isExpanded ? items.name : null"
+                matTooltipPosition="right">
+                 {{items.icon}} 
+                </mat-icon>
+              </a>
+             
+              
+            </mat-list>
+           
+          </div>
+                
+           
+      
+
+    </section>
