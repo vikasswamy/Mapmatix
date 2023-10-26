@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import * as L from 'leaflet';
 import * as maptalks from "maptalks";
 import { NavigationEnd, Router } from "@angular/router";
@@ -20,6 +21,8 @@ import {
 import { FormControl } from "@angular/forms";
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
+import { SettingsComponent } from '../settings/settings.component';
+import { AddbuildingpopupComponent } from '../addbuildingpopup/addbuildingpopup.component';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -41,7 +44,11 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild('map')
   private mapContainer: ElementRef<HTMLElement>;
-  constructor() { }
+  constructor(
+    public dialog: MatDialog
+
+  ) { 
+  }
 
   ngAfterViewInit() {
     var map: any = null;
@@ -59,5 +66,11 @@ export class MapComponent implements AfterViewInit {
       }),
     });
    }
- 
+
+ openDailog(event:any){
+  this.dialog.open(AddbuildingpopupComponent, {
+    autoFocus: true,
+    data: event,
+  });
+ }
 }

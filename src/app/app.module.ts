@@ -9,7 +9,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonModule } from "@angular/material/button";
-
+import {MatTabsModule} from '@angular/material/tabs';
 // components
 import { AppComponent } from "./app.component";
 import { AboutComponent } from "./pages/about.component";
@@ -19,6 +19,9 @@ import { MapComponent } from './pages/map/map.component';
 import { OccupencyComponent } from './pages/occupency/occupency.component';
 import { MaintenanceComponent } from './pages/maintenance/maintenance.component';
 import { AirquailityComponent } from './pages/airquaility/airquaility.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AddbuildingpopupComponent } from './pages/addbuildingpopup/addbuildingpopup.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 export const ROUTES: Routes = [
   {
@@ -48,6 +51,8 @@ export const ROUTES: Routes = [
     LocationsComponent,
     SidenavComponent,
     MapComponent,
+    SettingsComponent,
+    AddbuildingpopupComponent,
   ],
   imports: [
     RouterModule.forRoot(ROUTES),
@@ -56,6 +61,8 @@ export const ROUTES: Routes = [
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatTabsModule,
+    MatDialogModule,
     MatTooltipModule,
     MatButtonModule,
   ],

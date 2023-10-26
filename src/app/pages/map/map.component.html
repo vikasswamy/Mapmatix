@@ -3,7 +3,7 @@
     <div id="map"></div>
     <div id="buttongrouping" class="buttongrouping">
           <div class="example-button-container">
-            <button mat-fab color="primary" >
+            <button mat-fab color="primary" (click)="openDailog($event)" >
               <mat-icon 
               matTooltip="Add building"
               matTooltipPosition="right">
@@ -19,7 +19,9 @@
             </button>
           </div>
        
-     
+     <div class="name">
+      
+     </div>
 
     </div>
   
