@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/f2a66cd9-1275-4316-9c87-9dd9a14866c1/resourceGroups/SmartWorkspace/providers/Microsoft.Web/sites/mapmatrixapplication",
+    "appService.deploySubpath": "dist\\side-nav-mini"
+}

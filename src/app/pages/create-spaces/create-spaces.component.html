@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="pane">
+          <button mat-icon-button color="primary" aria-label="normal button" (click)="startEdit()">
+            <mat-icon  matTooltip="Start Edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" aria-label="normal button" (click)="endEdit()">
+            <mat-icon  matTooltip="Done">done_all</mat-icon>
+          </button>
+          <button *ngIf="showupload"  mat-icon-button color="primary" aria-label="normal button" (click)="onDownload()">
+            <mat-icon  matTooltip="Save">save</mat-icon>
+          </button>
+           
+        </div>
+        
+      <div id="createspace"></div>
+        <div class="accordian">
+            <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+                <mat-expansion-panel *ngFor="let panel of accordions;let i = index" cdkDrag
+                  (opened)="panelOpenState = true"
+                  (closed)="panelOpenState = false"
+                >
+                <button mat-icon-button class="icon-button-small" (click)="deleteItem($event,panel,i)" color="gray"  aria-label="normal button">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+                  <mat-expansion-panel-header>
+                     <mat-panel-title>{{ i+1}}</mat-panel-title>
+                    <mat-panel-description>{{ panel.facilityName }}</mat-panel-description>
+                  </mat-expansion-panel-header>
+                  
+                  <ng-container *ngIf="panel.subAccordion">
+            
+                    <mat-accordion>
+                      <mat-expansion-panel *ngFor="let subpanel of panel.subAccordion"
+                        (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false"
+                      >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title> </mat-panel-title>
+                          <mat-panel-description>{{ panel.levelName }}
+                           </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form
+                        name="form"
+                        #f="ngForm"
+                        (ngSubmit)="f.form.valid"
+                       
+                      >
+                      <label> SpaceName</label>
+                        <mat-form-field appearance="outline">
+                            
+                            <input matInput
+                            type="text"
+                            class="form-control"
+                            name="spaceName"
+                            [(ngModel)]="subpanel.spaceName"
+                            required
+                            #spaceName="ngModel"
+                            
+                          /> 
+                          </mat-form-field>
+                          <label> Space Type</label>
+                        <mat-form-field appearance="outline">
+                            
+                        <input matInput
+                        type="text"
+                        class="form-control"
+                        name="SpaceType"
+                        [(ngModel)]="subpanel.spaceType"
+                        required
+                        #SpaceType="ngModel"
+                        
+                      /> 
+                      </mat-form-field>
+                         </form>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+               
+                  </ng-container>
+            
+                </mat-expansion-panel>
+            
+              </mat-accordion>
+             
+                <!-- (click)="bulksubmit()"  -->
+                <button *ngIf="accordions.length >0" type="button"  class='confirm-button'
+                 id="left-panel-link" (click) = "submitSpaces()" >Confirm Spaces & Submit</button>
+             
+        </div>
+    </div>
+</div>

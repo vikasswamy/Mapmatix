@@ -1,0 +1,58 @@
+
+<div class="register-form">
+  <form
+    name="form"
+    #f="ngForm"   
+  >
+    <div class="form-group">
+      <label>Site Name</label>
+      <mat-form-field appearance="outline">
+        <mat-select class="form-control" name="sitename" #sitename="ngModel" (selectionChange)="selectedSite(sitename.value)" [(ngModel)]="form.siteId" required [ngClass]="{ 'is-invalid': f.submitted && sitename.errors }" >
+          <mat-option *ngFor="let m of sitesData" [value]="m.siteId">{{ m.siteName }}</mat-option>
+       </mat-select >
+      </mat-form-field>
+     
+      <div *ngIf="f.submitted && sitename.errors" class="invalid-feedback">
+        <div *ngIf="sitename.errors['required']">Site name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Facility Name</label>
+      <mat-form-field appearance="outline">
+        <mat-select  [disabled]="!form.siteId" class="form-control" name="facilityname" #facilityname="ngModel" (selectionChange)="selectedFacility(facilityname.value)" [(ngModel)]="form.facilityId" required [ngClass]="{ 'is-invalid': f.submitted && facilityname.errors }" >
+          <mat-option *ngFor="let m of facilityData" [value]="m.facilityId">{{ m.facilityName }}</mat-option>
+       </mat-select >
+      </mat-form-field>
+     
+      <div *ngIf="f.submitted && facilityname.errors" class="invalid-feedback">
+        <div *ngIf="facilityname.errors['required']">facility name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Level Name</label>
+      <mat-form-field appearance="outline">
+        <mat-select  [disabled]="!form.facilityId" class="form-control" name="levelname" #levelname="ngModel" (selectionChange)="selectLevel(levelname.value)" [(ngModel)]="form.levelId" required [ngClass]="{ 'is-invalid': f.submitted && levelname.errors }" >
+          <mat-option *ngFor="let m of levelsData" [value]="m.levelId">{{ m.levelName }}</mat-option>
+       </mat-select >
+      </mat-form-field>
+      
+      <div *ngIf="f.submitted && levelname.errors" class="invalid-feedback">
+        <div *ngIf="levelname.errors['required']">Level name is required</div>
+      </div>
+    </div>
+
+    <div class="buttongroup">
+      <a *ngIf="form.levelId" (click)="redirect()">click here to locate from map <mat-icon matSuffix>location_on</mat-icon></a> 
+      <!-- <button [disabled]="!form.spaceId" (click)="onSubmit()" type="submit" color="primary" mat-raised-button >Submit</button>
+    <button
+    mat-raised-button 
+      type="button"
+      (click)="onReset(f)"
+      color="warn"
+    >
+      Reset
+    </button> -->
+
+    </div>
+  </form>
+</div>

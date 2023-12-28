@@ -1,0 +1,55 @@
+
+.card {
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+
+  }
+  .items{
+    display: flex;
+  }
+  .location{
+    display: flex;
+    width: 70%;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-left: 8px;
+    
+  }
+  .location p a {
+    padding-top: 50px;
+  }
+ 
+  .mat-form-field {
+    width: 100%;
+    width: 100%;
+  }
+
+  mat-card-title,
+  mat-card-content {
+    display: block;
+    justify-content: center;
+  }
+  .image-upload > input
+  {
+      display: none;
+  }
+  
+  .image-upload i
+  {
+      width: 80px;
+      cursor: pointer;
+  }
+  .error {
+    padding: 16px;
+    width: 300px;
+    color: white;
+    background-color: red;
+  }
+
+  .buttongroup {
+    display: flex;
+    justify-content: space-between;
+    
+
+  }

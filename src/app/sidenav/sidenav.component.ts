@@ -1,6 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { MatIconRegistry } from '@angular/material/icon';
-import {DomSanitizer} from '@angular/platform-browser'; 
+import { Component, Input, Output, EventEmitter, } from "@angular/core";
 @Component({
   selector: "side-nav",
   styleUrls: ["./sidenav.component.scss"],
@@ -20,12 +18,8 @@ export class SidenavComponent {
     { link: "Users", name: "User Management", icon: "supervised_user_circle" },
 
   ]
-  constructor( private matIconRegistry:MatIconRegistry,
-    private domSanitzer:DomSanitizer,) {
-      this.matIconRegistry.addSvgIcon(
-        'logo',
-        this.domSanitzer.bypassSecurityTrustResourceUrl('https://storagesmartroute27.blob.core.windows.net/3d-geojson/spinners/abm-logo.svg')
-      );
+  constructor( ) {
+    
    }
   
 }

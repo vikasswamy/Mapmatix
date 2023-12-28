@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { SiteonboardingService } from './siteonboarding.service';
 
 @Component({
   selector: 'app-addbuildingpopup',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./addbuildingpopup.component.scss' ]
 })
 export class AddbuildingpopupComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  public demo1TabIndex :any;
+  constructor(public siteonboardingservice : SiteonboardingService) { 
   }
-
+ 
+  ngOnInit(): void {
+    
+   this.demo1TabIndex= this.siteonboardingservice.selectedtab
+  }
+ 
 }

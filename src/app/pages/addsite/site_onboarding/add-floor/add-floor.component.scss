@@ -1,0 +1,93 @@
+
+.card {
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+
+  }
+  .fileUpload {
+    position: relative;
+    overflow: hidden;
+   
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.5;
+    filter: alpha(opacity=0);
+}
+
+  main {
+    padding: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    display: block;
+    color: greenyellow;
+  }
+
+  label {
+    color: black;
+  }
+
+  .items{
+    display: flex;
+  }
+  .location{
+    display: flex;
+    width: 70%;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-left: 8px;
+    
+  }
+  .location p a {
+    padding-top: 50px;
+  }
+ 
+  .mat-form-field {
+    width: 100%;
+    width: 100%;
+  }
+
+  mat-card-title,
+  mat-card-content {
+    display: block;
+    justify-content: center;
+  }
+
+  .error {
+    padding: 16px;
+    width: 300px;
+    color: white;
+    background-color: red;
+  }
+
+  .buttongroup {
+    display: flex;
+    justify-content: space-between;
+    
+
+  }
+  .image-upload > input
+  {
+      display: none;
+  }
+  
+  .image-upload i
+  {
+      width: 80px;
+      cursor: pointer;
+  }
+  .fields{
+    display: flex;
+    
+    justify-content: space-between;
+  
+  }

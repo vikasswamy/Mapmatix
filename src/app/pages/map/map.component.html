@@ -1,6 +1,20 @@
 <div class="row">
   <div class="col-lg-12">
     <div id="map"></div>
+    <div *ngIf="showicons" id="state-legend" class="legend">
+      <div> <button matTooltip="Occupancy" mat-icon-button   color="primary" aria-label="normal button"  (click)="showOccupency()">
+        <img class="icon" src="../../../assets/icons8-user-groups-80.png" alt="">
+      </button> </div>
+      <div><button matTooltip="IAQ" mat-icon-button color="primary" aria-label="normal button" (click)="showIAQ()" >
+        <img class="icon" src="../../../assets/IAQ.png" alt="">
+      </button> </div>
+      <div><button matTooltip="IOT Camera" mat-icon-button color="primary" aria-label="normal button" (click)="showCameras()" >
+        <img class="icon" src="../../../assets/camera marker.png" alt="">
+      </button></div>
+      <div><button matTooltip="Routers" mat-icon-button color="primary" aria-label="normal button" (click)="showRouters()">
+        <img class="icon" src="https://storagesmartroute27.blob.core.windows.net/filesupload/Markers/icons8-router-50.png" alt="">
+      </button></div>
+  </div>
     <div id="buttongrouping" class="buttongrouping">
           <div class="example-button-container">
             <button mat-fab color="primary" (click)="openDailog($event)" >
@@ -10,11 +24,18 @@
               domain
               </mat-icon>
             </button>
-            <button mat-fab color="primary" >
+            <!-- <button mat-fab color="primary" >
               <mat-icon 
               matTooltip="Add Staff"
               matTooltipPosition="right">
               group_add
+              </mat-icon>
+            </button> -->
+            <button *ngIf="showRefresh" mat-fab color="primary" (click)="refreshpage($event)">
+              <mat-icon 
+              matTooltip="Refresh"
+              matTooltipPosition="right">
+              refresh
               </mat-icon>
             </button>
           </div>

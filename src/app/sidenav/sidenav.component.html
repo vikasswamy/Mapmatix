@@ -3,10 +3,10 @@
    
           <div class="toggle">
             <div>
-              <button class="icon-button" (click)="toggleMenu.emit(null)">
+              <button class="icon-button" >
 
                 <div *ngIf="!isExpanded">                  
-                   <img class="icon" src="/assets/abm_logo.png" alt="">
+                   <img class="icon" src="/assets/blue user.png" alt="">
                 </div>
                 <div *ngIf="isExpanded">
                   :<mat-icon>keyboard_backspace</mat-icon>
@@ -37,7 +37,7 @@
                 >
                   {{ route.icon }}</mat-icon
                 >
-                <!-- <p matLine *ngIf="isExpanded">{{ route.name }}</p> -->
+                <p matLine *ngIf="isExpanded">{{ route.name }}</p>
               </a>
             </mat-list>
           </div>
@@ -56,7 +56,7 @@
                  {{items.icon}} 
                 </mat-icon>
               </a>
-             
+              <!-- <p matLine *ngIf="isExpanded">{{ items.name }}</p> -->
               
             </mat-list>
            

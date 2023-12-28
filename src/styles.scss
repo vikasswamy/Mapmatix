@@ -18,3 +18,146 @@ mat-sidenav[style] {
   transform: none !important;
 
 }
+.mat-tab-body.mat-tab-body-active{
+  overflow: hidden !important;
+}
+.mat-drawer-content {
+ 
+  overflow: hidden !important;
+}
+.example-accordion {
+  display: block;
+  max-width: 500px;
+}
+
+.example-accordion-item {
+  display: block;
+  border: solid 1px #ccc;
+}
+
+.example-accordion-item + .example-accordion-item {
+  border-top: none;
+}
+
+.example-accordion-item-header {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.example-accordion-item-description {
+  font-size: 0.85em;
+  color: #999;
+}
+
+.example-accordion-item-header,
+.example-accordion-item-body {
+  padding: 16px;
+}
+
+.example-accordion-item-header:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.example-accordion-item:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.example-accordion-item:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.mat-accordion .mat-expansion-panel:not(.mat-expanded),
+.mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
+  margin: 10px;
+  border-radius: 5px;
+}
+.accordion__container {
+
+  row-gap: 0.75rem;
+  overflow: hidden;
+  padding: 0.5rem 0.2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  box-shadow: 0 12px 32px rgba(51, 51, 51, 0.1);
+}
+
+.accordion__title {
+  font-size: 12px;
+  color: white;
+  font-weight: 200;
+  margin-top: 0.15rem;
+  transition: 0.2s;
+}
+
+.accordion__header {
+  display: flex;
+  column-gap: 0.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.accordion__description {
+  padding: 0 0.25rem 0.25rem 1rem;
+  font-size: var(--smaller-font-size);
+}
+
+.accordion__item {
+  box-shadow: 0 2px 6px rgba(38, 38, 38, 0.1);
+  background-color: #2d3436;
+  border-radius: 0.25rem;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.accordion__item::after {
+  content: "";
+  background-color: rgb(23, 23, 23);
+  width: 5px;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.accordion__content {
+  overflow: hidden;
+  height: 0;
+  transition: all 0.25s ease;
+}
+
+/*Rotate icon and add font weight to titles*/
+.accordion-open .accordion__icon {
+  transform: rotate(45deg);
+}
+
+.accordion-open .accordion__title {
+  font-weight: 600;
+}
+
+/*=============== MEDIA QUERIES ===============*/
+/* For medium devices */
+@media screen and (min-width: 100%) {
+  .accordion__container {
+    width: 100%;
+    padding: 0.2rem;
+    justify-self: center;
+    border-radius: 0.75rem;
+  }
+  
+
+  .accordion__header {
+    padding: 0.5rem;
+  }
+
+  .accordion__title {
+    padding-right: 0.5rem;
+  }
+
+  .accordion__description {
+    padding: 0.5rem;
+  }
+}

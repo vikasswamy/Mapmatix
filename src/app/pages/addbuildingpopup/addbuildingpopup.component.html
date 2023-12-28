@@ -1,7 +1,7 @@
-<mat-tab-group>
-    <mat-tab label="Add Site "> Add Site </mat-tab>
-    <mat-tab label="Add Facility"> Add Facility </mat-tab>
-    <mat-tab label="Add Level">Add Level </mat-tab>
-    <mat-tab label="Add Space">Add Space </mat-tab>
-    <mat-tab label="Add Device ">Add Device </mat-tab>
+<mat-tab-group [(selectedIndex)]="siteonboardingservice.selectedtab">
+    <mat-tab  label="Add Site "><app-addsite></app-addsite> </mat-tab>
+    <mat-tab  label="Add Facility"><app-add-facility></app-add-facility></mat-tab>
+    <mat-tab  label="Add Level"> <app-add-floor></app-add-floor></mat-tab>
+    <mat-tab  label="Add Space"><app-add-space></app-add-space> </mat-tab>
+    <!-- <mat-tab label="Add Device "><app-add-device></app-add-device> </mat-tab> -->
   </mat-tab-group>

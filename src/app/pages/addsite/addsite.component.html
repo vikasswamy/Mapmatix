@@ -1,0 +1,105 @@
+
+
+  <div class="register-form">
+    <form
+      name="form"
+      #f="ngForm"
+      (ngSubmit)="f.form.valid "
+     
+    >
+      <div class="form-group">
+        <label>Site Name</label>
+  
+        <mat-form-field appearance="outline">
+        <input
+        matInput
+          type="text"
+          class="form-control"
+          (change)="onchangeSiteName(sitename.value)"
+          name="sitename"
+          placeholder="Enter site Name"
+          [(ngModel)]="form.siteName"
+          required
+          #sitename="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && sitename.errors }"
+        />
+        <div *ngIf="f.submitted && sitename.errors" class="invalid-feedback">
+          <div *ngIf="sitename.errors['required']">Sitename is required</div>
+        </div>
+        </mat-form-field>
+        
+        
+      </div>
+  
+    
+      <div class="form-group">
+        <div class="buttongroup">
+          <div class="image-upload">
+            <label for="file-input">
+             <mat-icon>cloud_upload</mat-icon>
+            </label>
+            <p  class="note"><span style="font-size: 12px;">(Supported File Formats:*/.png,.jpg,JPEG)</span></p>
+            <input [disabled]="!form.siteName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"  accept=".jpg,.img,.png,.JPEG" />
+        </div> 
+      
+        </div>
+       
+      </div>
+      <div  class="form-group">
+        <label> Location</label>   <a *ngIf="form.fileUrl" (click)="redirect()">click here to locate from map</a><mat-icon matSuffix>location_on</mat-icon>
+  
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="text"
+            [disabled]="!form.fileUrl" 
+            class="form-control"
+            placeholder="Enter Coordinate Ex:[Lan, Lat]"
+            name="Location"
+            [(ngModel)]="form.lan +','+ form.lat"
+            required
+            #location="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && location.errors }"
+          />
+          
+        <div *ngIf="f.submitted && location.errors" class="invalid-feedback">
+          <div *ngIf="location.errors['required']">location is required</div>
+         
+        </div>
+        </mat-form-field>
+        
+  
+      </div>
+  
+        <div class="buttongroup"> 
+          <button [disabled]="!form.lat && !form.lan" type="submit" color="primary" (click)="onSubmit()" mat-raised-button >Submit</button>
+        <button
+        mat-raised-button 
+          type="button"
+          (click)="onReset(f)"
+          color="warn"
+        >
+          Reset
+        </button>
+  
+        </div>
+        
+    </form>
+  </div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
