@@ -227,18 +227,16 @@ export class MapComponent implements OnInit {
      
      this.sitemarker.on('click', (e:any)=> {  
         this.siteonboarding.obtainedFacilityDetails.subscribe((data:any)=>{
-         
+          console.log( e.target.options.id)
           data.forEach((facility:any,index:any) => {
             if(facility.Site_Id == e.target.options.id ){
               this.selectedsiteFacilities.push(data[index]);
-              if(index == data.length-1){
-                this.facilityName=this.selectedsiteFacilities[0].facilityName
-                 this.gotofacilities(this.selectedsiteFacilities);
-              }
             }
           });
+                this.facilityName=this.selectedsiteFacilities[0].facilityName;
+                 this.gotofacilities(this.selectedsiteFacilities);
+                 e.target.hide();
           
-          e.target.hide();
         })
         
       })
