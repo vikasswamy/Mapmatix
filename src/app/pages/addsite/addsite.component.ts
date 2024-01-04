@@ -35,9 +35,9 @@ export class AddsiteComponent implements OnInit {
     this.locationservice.addSiteData.subscribe((data:any)=>{
           this.form.siteName=data[0].siteName
           this.form.fileUrl= data[0].fileUrl
-           this.form.lan= data[0].lan;
-           this.form.lat= data[0].lat;
-          
+          this.form.lan= data[0].lan;
+          this.form.lat= data[0].lat;
+          this.lanlat= data[0].lan+','+ data[0].lat;
     })
   }
 
@@ -62,7 +62,7 @@ export class AddsiteComponent implements OnInit {
     console.log(event.target.value,"::::event.target.value:::");
     this.form.lan=event.target.value.split(',')[0];
     this.form.lat=event.target.value.split(',')[1];
-    console.log(this.form)
+    this.lanlat =event.target.value
   }
   private reloadImages() {
     this.blobService.listImages(this.sas).then((list) => {
@@ -95,7 +95,8 @@ export class AddsiteComponent implements OnInit {
      
       })
         this.dialog.closeAll();
-        this.router.navigate(['map'])
+        // this.siteonboarding.saveAllsiteDetails(response);
+        this.router.navigate(['/map'])
 
       }else{
         this.snackBar.open("Failed", "Retry", {

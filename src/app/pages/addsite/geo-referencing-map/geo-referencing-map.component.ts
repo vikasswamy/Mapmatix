@@ -87,6 +87,7 @@ export class GeoReferencingMapComponent implements OnInit {
         const lngLat = marker.getLngLat();
         self.formdata[0].lan=lngLat.lng;
         self.formdata[0].lat =lngLat.lat;
+        console.log(self.formdata[0])
         self.opendialog()
         }
       }

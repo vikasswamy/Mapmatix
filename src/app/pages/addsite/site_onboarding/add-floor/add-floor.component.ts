@@ -39,6 +39,8 @@ export class AddFloorComponent implements OnInit {
   ]
   selectedfile: any={};
   responceFacilityId: any;
+  sitename: any;
+  lanlat: string;
   constructor(private http: HttpClient,public snackBar: MatSnackBar, private router: Router, private blobService: FilesService, private siteonboarding: SiteonboardingService, private maplocationservice: MaplocationService, public dialog: MatDialog
   ) {
     this.maplocationservice.addFacilityData.subscribe((data: any) => {
@@ -47,7 +49,6 @@ export class AddFloorComponent implements OnInit {
       this.form.facilityId = data.facilityName;
       this.form.levelName = data.levelName;
       this.form.fileUrl = data.fileUrl;
-
     })
   }
 
@@ -71,7 +72,7 @@ export class AddFloorComponent implements OnInit {
       
       this.picturesList = [];
       if (this.fileName) {
-        this.blobService.uploadImage(this.sas, file, this.facilityName.replace(/\s+/g, '')+"/"+this.form.levelName.replace(/\s+/g, '')+ "/" + this.fileType + "/" + file.name, () => {
+        this.blobService.uploadImage(this.sas, file, this.sitename+'/'+ this.facilityName.replace(/\s+/g, '')+"/"+this.form.levelName.replace(/\s+/g, '')+ "/" + this.fileType + "/" + file.name, () => {
         });
         this.reloadImages();
       }
@@ -81,7 +82,7 @@ export class AddFloorComponent implements OnInit {
       fileReader.onload = () => {
        this.selectedfile=JSON.parse(fileReader.result);
        console.log(this.selectedfile);
-       this.form.fileUrl = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${this.form.levelName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
+       this.form.fileUrl = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.facilityName.replace(/\s+/g, '')}/${this.form.levelName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
       }
       fileReader.onerror = (error) => {
         console.log(error);
@@ -92,6 +93,7 @@ export class AddFloorComponent implements OnInit {
 
   }
   download(content:any, fileName:any, contentType:any) {
+    console.log(fileName)
     const a = document.createElement("a");
     const file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);
@@ -99,7 +101,7 @@ export class AddFloorComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', file);
     if (this.fileName) {
-      this.blobService.uploadImage(this.sas, file, this.facilityName.replace(/\s+/g, '') + "/"+ this.form.levelName.replace(/\s+/g, '')+"/" + this.fileType + "/" + this.fileName, () => {
+      this.blobService.uploadImage(this.sas, file,this.sitename+"/"+this.facilityName.replace(/\s+/g, '') + "/"+ this.form.levelName.replace(/\s+/g, '')+"/" + this.fileType + "/" + this.fileName, () => {
       });
       this.reloadImages();
     }
@@ -114,7 +116,7 @@ export class AddFloorComponent implements OnInit {
   private reloadImages() {
     this.blobService.listImages(this.sas).then((list) => {
       if(list){
-        this.form.fileUrl = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${this.form.levelName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
+        this.form.fileUrl = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.facilityName.replace(/\s+/g, '')}/${this.form.levelName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
       }
       
     });
@@ -146,7 +148,9 @@ export class AddFloorComponent implements OnInit {
   }
   selectedFacility(value: any) {
     let selectedObj = this.facilityData.filter((ele: any) => { return ele.facilityId == value });
-
+    let selectedsiteobj = this.sitesData.filter((ele:any)=>{ return ele.siteId == this.form.siteId});
+    console.log(selectedsiteobj,"selectedsiteobj");
+    this.sitename =  selectedsiteobj[0].siteName;
     let coordinates: any = selectedObj[0].facilitylocation.coordinates;
 
     this.maplocationservice.setFacilitylocation(coordinates);

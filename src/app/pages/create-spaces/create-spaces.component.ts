@@ -84,6 +84,7 @@ export class CreateSpacesComponent implements OnInit {
   Level_Id: any;
   geojsonLink: any;
   drawToolitems: any=[];
+  loader: boolean=true;
   constructor(public snackBar: MatSnackBar, private http: HttpClient, private route: ActivatedRoute, private siteonboarding: SiteonboardingService, private blobService: FilesService,public dialog: MatDialog, private maplocationservice: MaplocationService) {  
     this.routeparams = this.route.snapshot.paramMap.get('id');
     //if(this.routeparams == 3 || this.routeparams == 4){
@@ -113,7 +114,8 @@ export class CreateSpacesComponent implements OnInit {
   ngOnInit() {
     this.getSpaces();
 
-    var polygons:any=[]
+    var polygons:any=[];
+  
     this.siteonboarding.obtainedLevelDetails.subscribe((data: any) => {
       data.forEach((ele:any,i:any)=>{
         if(ele.levelId == this.formdata[0].levelId){
@@ -130,6 +132,13 @@ export class CreateSpacesComponent implements OnInit {
         }
       })
     });
+    this.siteonboarding.obtainedSiteDetails.subscribe((sitedata:any)=>{
+      sitedata.forEach((ele:any,k:any) => {
+        if(ele.siteId == this.formdata[0].Site_Id){
+          this.siteName = sitedata[k].siteName;
+        } 
+      });
+    })
    var changeImagesize:any;
     let mapZoom:any= this.facilityLocation.length == 0 ? 0 : 24 ;
     let mapcenter = this.facilityLocation.length == 0 ? [-24, 42] :this.facilityLocation ;
@@ -184,6 +193,7 @@ export class CreateSpacesComponent implements OnInit {
         })
       })
       if(data[0]){
+        this.loader = false
         data[0].features.forEach((poly:any) => {
             layer.addGeometry(poly)
         });
@@ -196,12 +206,12 @@ export class CreateSpacesComponent implements OnInit {
     
     if(this.formdata.fileUrl && !this.formdata[0].fileUrl.includes('.geojson') ){
       imageurl= this.formdata.fileUrl.includes('.geojson')==false ?this.formdata.fileUrl:'';
-      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
+      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.siteName}/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
 
       this.drawToolitems=['Point', 'LineString', 'Polygon', 'Circle', 'Ellipse', 'Rectangle', 'FreeHandLineString', 'FreeHandPolygon']
     }else if(this.formdata[0].fileUrl && !this.formdata[0].fileUrl.includes('.geojson')){
       imageurl=this.formdata[0].fileUrl.includes('.geojson')==false ? this.formdata[0].fileUrl :'';
-      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
+      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.siteName}/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
 
       this.drawToolitems=['Point', 'LineString', 'Polygon', 'Circle', 'Ellipse', 'Rectangle', 'FreeHandLineString', 'FreeHandPolygon']
 
@@ -211,7 +221,7 @@ export class CreateSpacesComponent implements OnInit {
       this.drawToolitems=['Point']
 
     }else if(!this.formdata[0].fileUrl.includes('.geojson')){
-      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
+      this.geojsonLink= `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.siteName}/${this.facilityName.replace(/\s+/g, '')}/${this.levelName.replace(/\s+/g, '')}/geojson/${this.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
       this.drawToolitems=['Point']
 
     }
@@ -378,29 +388,13 @@ export class CreateSpacesComponent implements OnInit {
 
    }
    getpolygonsdata(){
+    this.loader = true;
     this.http.get(String(this.geojsonLink)).subscribe((response:any) => {
         if(response){
+          this.loader = false;
           this.sampleGeojson.features=[];
           response.features.forEach((item:any) => {
-           this.sampleGeojson.features.push(item)
-
-          //  polygons.push( new maptalks.Polygon(
-          //   item.geometry.coordinates
-          // , {
-          //   visible : true,
-          //   editable : true,
-          //   cursor : 'pointer',
-          //   draggable : false,
-          //   dragShadow : false, // display a shadow during dragging
-          //   drawOnAxis : null,  // force dragging stick on a axis, can be: x, y
-          //   symbol: {
-          //     'lineColor' : '#34495e',
-          //     'lineWidth' : 2,
-          //     'polygonFill' : 'rgb(135,196,240)',
-          //     'polygonOpacity' : 0.6
-          //   }
-          // }));
-           
+           this.sampleGeojson.features.push(item)         
           
           });
       
@@ -502,7 +496,7 @@ export class CreateSpacesComponent implements OnInit {
     this.fileName = fileName
     this.fileType = fileName.split(".")[1];
     if (this.fileName) {
-      this.blobService.uploadImage(this.sas, file, this.facilityName.replace(/\s+/g, '') + "/" + this.levelName.replace(/\s+/g, '') + "/" + this.fileType + "/" + fileName, () => {
+      this.blobService.uploadImage(this.sas, file,this.siteName+'/'+ this.facilityName.replace(/\s+/g, '') + "/" + this.levelName.replace(/\s+/g, '') + "/" + this.fileType + "/" + fileName, () => {
       });
       this.reloadImages();
     }

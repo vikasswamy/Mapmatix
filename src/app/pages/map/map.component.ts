@@ -29,6 +29,7 @@ import{ui}from 'maptalks'
 export interface CustomHtmlOptions extends ui.UIMarkerOptions{
   id: any;
   type:any;
+  name:any;
 }
 @Component({
   selector: 'app-map',
@@ -70,6 +71,7 @@ export class MapComponent implements OnInit {
     features: []
   }
   focuspoint: any;
+  sitename: any;
   constructor(
     public dialog: MatDialog,private http: HttpClient,
     private router: Router,
@@ -135,6 +137,7 @@ export class MapComponent implements OnInit {
   plotingsitemarkers(){
     this.selectedsiteFacilities=[]
     this.facilityName=null;
+    this.sitename = null;
     this.sitemarker='';
     this.siteonboarding.obtainedSiteDetails.subscribe((response)=>{
       let sties :any = response;
@@ -145,6 +148,7 @@ export class MapComponent implements OnInit {
         'draggable': false,
         'single': false,
         'id' : site.siteId,
+        'name': site.siteName,
         'type': 'sitemarker',
         'content': `
         <style>   
@@ -234,9 +238,10 @@ export class MapComponent implements OnInit {
               this.selectedsiteFacilities.push(data[index]);
             }
           });
+                this.sitename= e.target.options.name;
                 this.facilityName=this.selectedsiteFacilities[0].facilityName;
                  this.gotofacilities(this.selectedsiteFacilities);
-                 e.target.hide();
+                 this.sitemarker.remove();
           
         })
         
@@ -256,6 +261,7 @@ export class MapComponent implements OnInit {
         'draggable': false,
         'single': false,
         'id' : facility.facilityId,
+        'name':facility.facilityName,
         'type': 'facilitymarker',
         'content': `
         <style>   
@@ -361,7 +367,7 @@ export class MapComponent implements OnInit {
         })
         this.levelName=this.selectedLevels[0].levelName;
        
-      e.target.remove();
+      this.facilitymarker.remove();
       })
     });
     this.map.animateTo({
@@ -521,7 +527,7 @@ export class MapComponent implements OnInit {
         if(element.fileUrl.includes('.geojson')){
           links=this.selectedLevels[l].fileUrl
         }else{
-           links = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.facilityName.replace(/\s+/g, '')}/${element.levelName.replace(/\s+/g, '')}/geojson/${element.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
+           links = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.facilityName.replace(/\s+/g, '')}/${element.levelName.replace(/\s+/g, '')}/geojson/${element.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
         }
         console.log(links," links ")
         this.http.get(String(links)).subscribe((response:any) => {

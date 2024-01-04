@@ -34,6 +34,7 @@ export class AddFacilityComponent implements OnInit {
   };
   filename: string;
   fileName: string;
+  sitename: any;
   constructor(public dialog: MatDialog, private blobService: FilesService,public snackBar: MatSnackBar,
     private router: Router,private siteonboarding : SiteonboardingService,private maplocationservice : MaplocationService
   ) { 
@@ -43,6 +44,7 @@ export class AddFacilityComponent implements OnInit {
             this.form.imageUrl = data[0].imageUrl;
            this.form.lan= data[0].lan;
            this.form.lat= data[0].lat;
+           this.lanlat= data[0].lan+','+ data[0].lat
     })
   }
 
@@ -60,7 +62,7 @@ export class AddFacilityComponent implements OnInit {
     console.log(facilityname)
     this.picturesList = [];
       if(this.form.facilityName){
-        this.blobService.uploadImage(this.sas, file,facilityname+ "/"+this.fileType+"/"+ file.name, () => {
+        this.blobService.uploadImage(this.sas, file,this.sitename+'/'+facilityname+ "/"+this.fileType+"/"+ file.name, () => {
         });
         this.reloadImages();
       }
@@ -70,8 +72,8 @@ export class AddFacilityComponent implements OnInit {
   
   private reloadImages() {
     this.blobService.listImages(this.sas).then((list) => {
-      this.form.imageUrl=`https://storagesmartroute27.blob.core.windows.net/filesupload/${this.form.facilityName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
-      list.push(`https://storagesmartroute27.blob.core.windows.net/filesupload/${this.form.facilityName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`)
+      this.form.imageUrl=`https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.form.facilityName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`;
+      list.push(`https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.form.facilityName.replace(/\s+/g, '')}/${this.fileType}/${this.fileName}`)
       list.forEach((ele:any)=>{
         let links = this.downloadThisBlob(ele, this.containerClient(this.sas));
 
@@ -101,7 +103,7 @@ export class AddFacilityComponent implements OnInit {
   }
   selectedSite(value:any) {
     let siteObject:any=this.sitesData.filter((ele:any,index:any)=>{ return ele.siteId == value});
-    console.log(siteObject);
+    this.sitename=siteObject[0].siteName;
     let coordinates:any = siteObject[0].location.coordinates;
     this.maplocationservice.setFacilitylocation(coordinates)
   }
@@ -124,7 +126,7 @@ export class AddFacilityComponent implements OnInit {
     console.log(event.target.value,"::::event.target.value:::");
     this.form.lan=event.target.value.split(',')[0];
     this.form.lat=event.target.value.split(',')[1];
-    console.log(this.form)
+    this.lanlat = event.target.value.split(',')[0]+','+event.target.value.split(',')[1]
   }
   onSubmit(): void {
     console.log(this.form)
@@ -139,7 +141,7 @@ export class AddFacilityComponent implements OnInit {
      
       })
         this.dialog.closeAll();
-        this.router.navigate(['map'])
+        this.router.navigate(['/map'])
       }else{
         this.snackBar.open("Failed", "retry", {
           duration: 3000,
