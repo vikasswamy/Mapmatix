@@ -41,6 +41,7 @@ export class AddSpaceComponent implements OnInit {
   levelsData: any[];
   constructor(private http: HttpClient, private router: Router, private blobService: FilesService, private siteonboarding: SiteonboardingService, private maplocationservice: MaplocationService, public dialog: MatDialog
   ) {
+ 
     this.getLevels();
 
   }

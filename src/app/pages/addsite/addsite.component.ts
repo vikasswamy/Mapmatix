@@ -23,6 +23,7 @@ export class AddsiteComponent implements OnInit {
   filename: string;
   fileName: string;
   routeparams: any;
+  lanlat:any;
   form :any= {
     siteName: '',
     fileUrl:'',
@@ -57,6 +58,12 @@ export class AddsiteComponent implements OnInit {
 
 
   }
+  locationchange(event:any){
+    console.log(event.target.value,"::::event.target.value:::");
+    this.form.lan=event.target.value.split(',')[0];
+    this.form.lat=event.target.value.split(',')[1];
+    console.log(this.form)
+  }
   private reloadImages() {
     this.blobService.listImages(this.sas).then((list) => {
       if(list){
@@ -77,6 +84,8 @@ export class AddsiteComponent implements OnInit {
   }
   onSubmit(): void {
     console.log(this.form)
+      this.form.lan==0?this.lanlat.split(',')[0]:'';
+      this.form.lat==0?this.lanlat.split(',')[1]:'';
     this.siteonboarding.addSite(this.form).subscribe((response:any)=>{
       console.log(response,"add site responce");
       if(Object.entries(response).length>0){

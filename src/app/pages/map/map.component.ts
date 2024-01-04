@@ -69,6 +69,7 @@ export class MapComponent implements OnInit {
     type: "FeatureCollection",
     features: []
   }
+  focuspoint: any;
   constructor(
     public dialog: MatDialog,private http: HttpClient,
     private router: Router,
@@ -556,10 +557,10 @@ export class MapComponent implements OnInit {
                 },
               }).on('click',(e)=>{
                 console.log(e);
-              
+                this.focuspoint=e.coordinate
                 this.getspaceIdsbyId(e.target.properties.id,e.target.properties.altitude);              
                 this.map.animateTo({
-                  center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+                  center: e.coordinate,
                   zoom: 23,
                   pitch: 0,
                   bearing: 0
@@ -567,7 +568,7 @@ export class MapComponent implements OnInit {
                   duration: 1000
                 })
               }).on('contextmenu',(e)=>{
-               
+               console.log(e)
                 this.layer.getGeometries().forEach((geo:any,index:any) => {
                   if((geo.type =="Point") &&  (geo.properties.deviceType)){
                     this.layer.getGeometries()[index].setOptions({visible:false})
@@ -578,7 +579,7 @@ export class MapComponent implements OnInit {
                  
                 });
                 this.map.animateTo({
-                  center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+                  center: e.coordinate,
                   zoom: 21,
                   pitch: 55,
                   bearing: 0
@@ -642,7 +643,7 @@ export class MapComponent implements OnInit {
       }
     });
     this.map.animateTo({
-      center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+      center: this.focuspoint,
       zoom: this.map.getZoom()-1,
       pitch: 0,
       bearing: 0
@@ -660,7 +661,7 @@ export class MapComponent implements OnInit {
     }
   });
   this.map.animateTo({
-    center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+    center: this.focuspoint,
     zoom: this.map.getZoom()+1,
     pitch: 0,
     bearing: 0
@@ -678,7 +679,7 @@ export class MapComponent implements OnInit {
     }
   });
   this.map.animateTo({
-    center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+    center: this.focuspoint,
     zoom: this.map.getZoom()-1,
     pitch: 0,
     bearing: 0
@@ -696,7 +697,7 @@ export class MapComponent implements OnInit {
     }
   });
   this.map.animateTo({
-    center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+    center: this.focuspoint,
     zoom: this.map.getZoom()+1,
     pitch: 0,
     bearing: 0

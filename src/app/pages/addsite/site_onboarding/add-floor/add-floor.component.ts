@@ -158,7 +158,7 @@ export class AddFloorComponent implements OnInit {
       if(Object.entries(response).length>0){
 
         console.log(this.selectedfile.features,"this.selectedfile.features");
-        this.selectedfile.features?this.getAllLevels():this.siteonboarding.selectedtab=3
+       this.getAllLevels()
           
         this.snackBar.open("Done", "close", {
           duration: 3000,
@@ -185,9 +185,11 @@ export class AddFloorComponent implements OnInit {
     this.siteonboarding.getAllLevels().subscribe((response:any)=>{
       if(response){
         this.siteonboarding.saveAllLevelDetails(response);
-        let filtedobjs:any
+        if(!this.selectedfile.features){
+          this.siteonboarding.selectedtab=3
+         }else{
+          let filtedobjs:any
           filtedobjs = response.filter((ele: any, index: any) => { return ele.Facility_Id === this.responceFacilityId && ele.levelName== this.form.levelName });
-          console.log(this.selectedfile.features.length,":::length of features:::");
          if(this.selectedfile.features.length>0){
           this.selectedfile.features.forEach((obj:any,i:any) => {
             if(obj.properties){
@@ -203,6 +205,8 @@ export class AddFloorComponent implements OnInit {
             }
             });
          }
+         }
+       
              
            
             

@@ -46,8 +46,8 @@
           <label for="file-input">
            <mat-icon>cloud_upload</mat-icon>
           </label>
-          <p class="note"><span style="font-size: 12px;">(Supported File Formats:*/geojson,.png,.jpg,JPEG)</span></p>
-          <input [disabled]="!form.facilityName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"  accept=".geojson,.jpg,.img,.png,.JPEG" />
+          <p class="note"><span style="font-size: 12px;">(Supported File Formats:*/.png,.jpg,JPEG)</span></p>
+          <input [disabled]="!form.facilityName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"  accept="..jpg,.img,.png,.JPEG,.JPG" />
       </div> 
       
       
@@ -60,11 +60,10 @@
         type="text"
         class="form-control"
         name="Location"
-        [(ngModel)]="form.lan+','+ form.lat"
+        [(ngModel)]="lanlat"
         required
-        minlength="6"
-        maxlength="20"
         #location="ngModel"
+        (change)="locationchange($event)"
         [ngClass]="{ 'is-invalid': f.submitted && location.errors }"
       />
     </mat-form-field>

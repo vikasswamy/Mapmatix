@@ -20,7 +20,7 @@ export class AddFacilityComponent implements OnInit {
   picturesList: any = [];
   sas = "sp=racwdli&st=2023-12-08T10:41:34Z&se=2025-09-04T18:41:34Z&spr=https&sv=2022-11-02&sr=c&sig=vCsc0ekXq6WQgRR%2BCzjy%2FWwhFSe%2BAZ7%2BF%2Byiv5lO%2BEw%3D";
   picturesDownloaded: string[] = [];
-
+  lanlat:any;
   sitesData:any=[
 
   ]
@@ -120,10 +120,16 @@ export class AddFacilityComponent implements OnInit {
     this.maplocationservice.addFacilityvalues([this.form]);
     this.router.navigate(['maptool/2'])
   }
-  onSubmit(): void {
- 
+  locationchange(event:any){
+    console.log(event.target.value,"::::event.target.value:::");
+    this.form.lan=event.target.value.split(',')[0];
+    this.form.lat=event.target.value.split(',')[1];
     console.log(this.form)
-
+  }
+  onSubmit(): void {
+    console.log(this.form)
+    this.form.lan==0?this.lanlat.split(',')[0]:'';
+    this.form.lat==0?this.lanlat.split(',')[1]:'';
     this.siteonboarding.addFacility(this.form).subscribe((response:any)=>{
       if(Object.entries(response).length>0){
         console.log(response,"add facility responce");

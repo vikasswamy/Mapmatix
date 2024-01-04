@@ -56,9 +56,10 @@
             class="form-control"
             placeholder="Enter Coordinate Ex:[Lan, Lat]"
             name="Location"
-            [(ngModel)]="form.lan +','+ form.lat"
+            [(ngModel)]="lanlat"
             required
             #location="ngModel"
+            (change)="locationchange($event)"
             [ngClass]="{ 'is-invalid': f.submitted && location.errors }"
           />
           
@@ -72,7 +73,7 @@
       </div>
   
         <div class="buttongroup"> 
-          <button [disabled]="!form.lat && !form.lan" type="submit" color="primary" (click)="onSubmit()" mat-raised-button >Submit</button>
+          <button [disabled]="!form.lat || !lanlat" type="submit" color="primary" (click)="onSubmit()" mat-raised-button >Submit</button>
         <button
         mat-raised-button 
           type="button"
