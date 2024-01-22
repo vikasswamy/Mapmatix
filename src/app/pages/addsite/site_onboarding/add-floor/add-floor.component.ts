@@ -107,7 +107,7 @@ export class AddFloorComponent implements OnInit {
       });
       this.reloadImages();
     }
-    //a.click();
+   
 
   }
   onDownload(editedgeojso:any){
