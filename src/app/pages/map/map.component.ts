@@ -231,7 +231,7 @@ export class MapComponent implements OnInit {
        
         `,
       }
-      this.sitemarker= new ui.UIMarker(site.location.coordinates, customoptions).addTo(this.map.getLayer('vector')).on('click', (e:any)=> {  
+      this.sitemarker= new ui.UIMarker(site.location.coordinates, customoptions).addTo(this.map).on('click', (e:any)=> {  
       
         this.siteonboarding.obtainedFacilityDetails.subscribe((data:any)=>{
           console.log( e.target.options.id)
