@@ -244,10 +244,10 @@ export class MapComponent implements OnInit {
                 this.facilityName=this.selectedsiteFacilities[0].facilityName;
                  this.gotofacilities(this.selectedsiteFacilities);
                 
-              this.sitemarker.setContent('');
+              //this.sitemarker.setContent('');
                //console.log(e.target.getContent())
                  //(document.getElementById('sitemarker')as HTMLElement).innerHTML=''; 
-                //  e.target.remove() ;
+                 e.target.remove() ;
                 
         })
        
