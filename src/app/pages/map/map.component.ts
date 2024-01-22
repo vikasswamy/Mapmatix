@@ -426,7 +426,7 @@ export class MapComponent implements OnInit {
                       'textFaceName' : 'sans-serif',
                       'textName' : '{name}',
                       'textSize' : 9,
-                      'textFill' : '#ffff',
+                      'textFill' : 'black',
                       'markerFillOpacity' : 1,
                       'textDy'   : 5
                     }

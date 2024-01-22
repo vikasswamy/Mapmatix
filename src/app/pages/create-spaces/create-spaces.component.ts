@@ -140,7 +140,7 @@ export class CreateSpacesComponent implements OnInit {
       });
     })
    var changeImagesize:any;
-    let mapZoom:any= this.facilityLocation.length == 0 ? 0 : 24 ;
+    let mapZoom:any= this.facilityLocation.length == 0 ? 0 : 20 ;
     let mapcenter = this.facilityLocation.length == 0 ? [-24, 42] :this.facilityLocation ;
      var map: any = null;
        map = new maptalks.Map("createspace", {
@@ -150,7 +150,7 @@ export class CreateSpacesComponent implements OnInit {
        minZoom: 2,
       pitch: 6,
       layerSwitcherControl: {
-        'position'  : {'top': '20', 'right': '750'},
+        'position'  : {'top': '20', 'right': '200'},
         // title of base layers
         
         'baseTitle' : 'Base Layers',
