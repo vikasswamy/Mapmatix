@@ -3,6 +3,8 @@
     height: 100%;
     overflow: hidden;
     position: absolute;
+    top: 0;
+    right: 0;
 }
 .spinner-div {
   z-index: 100000;
@@ -10,6 +12,7 @@
   bottom: 50%;
   position: absolute;
 }
+
 button[mat-icon-button]{
   $large-size-button: 80px;
   $large-size-icon: 48px;

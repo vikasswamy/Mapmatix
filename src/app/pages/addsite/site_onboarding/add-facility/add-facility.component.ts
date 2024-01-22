@@ -29,8 +29,10 @@ export class AddFacilityComponent implements OnInit {
     facilityName:'',
     imageUrl:'',
     lan: 0,
-    lat:0
-    
+    lat:0,
+    HrsFrom:0,
+    HrsTo:0,
+    MaxLevels:0,
   };
   filename: string;
   fileName: string;
@@ -42,8 +44,11 @@ export class AddFacilityComponent implements OnInit {
             this.form.siteId=data[0].siteId;
             this.form.facilityName= data[0].facilityName;
             this.form.imageUrl = data[0].imageUrl;
-           this.form.lan= data[0].lan;
-           this.form.lat= data[0].lat;
+            this.form.lan= data[0].lan;
+            this.form.lat= data[0].lat;
+            this.form.HrsFrom = data[0].HrsFrom;
+            this.form.HrsTo = data[0].HrsTo;
+            this.form.MaxLevels = data[0].MaxLevels;
            this.lanlat= data[0].lan+','+ data[0].lat
     })
   }
@@ -129,7 +134,7 @@ export class AddFacilityComponent implements OnInit {
     this.lanlat = event.target.value.split(',')[0]+','+event.target.value.split(',')[1]
   }
   onSubmit(): void {
-    console.log(this.form)
+    console.log(this.form,"add facility payload")
     this.form.lan==0?this.lanlat.split(',')[0]:'';
     this.form.lat==0?this.lanlat.split(',')[1]:'';
     this.siteonboarding.addFacility(this.form).subscribe((response:any)=>{

@@ -23,6 +23,7 @@
   .mat-form-field {
     width: 100%;
     width: 100%;
+   
   }
 
   mat-card-title,
@@ -53,3 +54,13 @@
     
 
   }
+  .row{
+    display: flex;
+    justify-items: space-between;
+    
+  }
+  .col-md-6{
+    padding: 5px;
+    margin: 5px;
+  }
+  

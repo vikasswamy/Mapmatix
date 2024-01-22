@@ -40,8 +40,8 @@ export class MapComponent implements OnInit {
   map: any;
   selectedsiteFacilities:any=[];
   selectedLevels:any=[]
-  sitemarker:any;
-  facilitymarker:any;
+  sitemarker:any=null;
+  facilitymarker:any=null;
   facilityName:any;
   showRefresh:boolean=false;
   showicons:boolean=false;
@@ -72,6 +72,7 @@ export class MapComponent implements OnInit {
   }
   focuspoint: any;
   sitename: any;
+  sitesdata: any=[];
   constructor(
     public dialog: MatDialog,private http: HttpClient,
     private router: Router,
@@ -85,12 +86,6 @@ export class MapComponent implements OnInit {
         
       ) {
         this.dialog.closeAll()
-      }else if( event.url == "/map"){
-        this.getAllSites();
-        this.getAllFacilities();
-        this.getAllLevels();
-        this.sitemarker='';
-        this.facilitymarker='';
       }
      
     });
@@ -98,16 +93,19 @@ export class MapComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.loadMap();
-    this.plotingsitemarkers();
+    this.getAllSites();
+    this.getAllFacilities();
+    this.getAllLevels();
+    //this.loadMap();
+    
     
    }
-   loadMap(){
+   loadMap(data:any){
     (document.getElementById('map')as HTMLElement).innerHTML='';
     this.map=null;
     this.showRefresh=false;
     this.showicons=false;
-    this.sitemarker=null;
+    
     this.map = new maptalks.Map("map", {
       center : [-1.85306,52.63249],
       zoom: 2.5,
@@ -115,32 +113,37 @@ export class MapComponent implements OnInit {
       pitch: 6,
       baseLayer: new maptalks.TileLayer("base", {
         urlTemplate:
-          "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
-        subdomains: ["a", "b", "c", "d"],
+          "http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",
+        subdomains: ['mt0','mt1','mt2','mt3'],
         attribution:
           '© <a href="http://osm.org">OpenStreetMap</a>  contributors, © <a href="https://carto.com/">CARTO</a> ',
       }),
     });
-    this.layer = new maptalks.VectorLayer("vector").setOptions({enableAltitude:true}).addTo(this.map)
+    this.layer = new maptalks.VectorLayer("vector").setOptions({enableAltitude:true}).addTo(this.map);
+     document.querySelector(".maptalks-attribution").innerHTML=''
+    
+    console.log(this.sitesdata)
+    if(this.sitesdata){
+      this.plotingsitemarkers(this.sitesdata);
+    }
    }
    getAllSites(){
     var self:any=this;
     this.siteonboarding.getAllSites().subscribe((response:any)=>{
       if(response){
-        console.log(response)
+        this.sitesdata=response
       this.siteonboarding.saveAllsiteDetails(response);
-       
+       this.loadMap(this.sitesdata)
 
       }
     });
   }
-  plotingsitemarkers(){
+  plotingsitemarkers(sties:any){
     this.selectedsiteFacilities=[]
     this.facilityName=null;
     this.sitename = null;
-    this.sitemarker='';
-    this.siteonboarding.obtainedSiteDetails.subscribe((response)=>{
-      let sties :any = response;
+   console.log(sties,":::sites:::")
+    
     sties.forEach((site:any) => {
       let sitename= site.siteName;
       
@@ -214,23 +217,22 @@ export class MapComponent implements OnInit {
       }
 
         </style>
-        <div class="marker">
+        <div class="marker" id='sitemarker'>
         <div class="main">
           <div class="image">
           <img src='${site.fileUrl}' alt="Profile Image">
           </div>
           <div class="info">
             <div class="title">${site.siteName}</div>
-            <div class="contant">&#127970;Facilities: ...</div>
+            <div class="contant">&#127970;No.of Facilities: ${site.total_Facilities}</div>
           </div>
         </div>
       </div>
        
         `,
       }
-     this.sitemarker= new maptalks.ui.UIMarker(site.location.coordinates,customoptions).addTo(this.map);
-     
-     this.sitemarker.on('click', (e:any)=> {  
+      this.sitemarker= new ui.UIMarker(site.location.coordinates, customoptions).addTo(this.map.getLayer('vector')).on('click', (e:any)=> {  
+      
         this.siteonboarding.obtainedFacilityDetails.subscribe((data:any)=>{
           console.log( e.target.options.id)
           data.forEach((facility:any,index:any) => {
@@ -241,15 +243,17 @@ export class MapComponent implements OnInit {
                 this.sitename= e.target.options.name;
                 this.facilityName=this.selectedsiteFacilities[0].facilityName;
                  this.gotofacilities(this.selectedsiteFacilities);
-                 this.sitemarker.remove();
-          
+                
+              this.sitemarker.setContent('');
+               //console.log(e.target.getContent())
+                 //(document.getElementById('sitemarker')as HTMLElement).innerHTML=''; 
+                //  e.target.remove() ;
+                
         })
-        
+       
       })
      
     });
-    })
-    
   }
   gotofacilities(facilities:any){   
      this.facilitymarker=null;
@@ -326,14 +330,14 @@ export class MapComponent implements OnInit {
         max-width: 200px;
       }
         </style>
-        <div class="marker">
+        <div class="marker" id='facilityMarker'>
         <div class="main">
           <div class="image">
           <img src=${facility.fileUrl.toString()} alt="Profile Image">
           </div>
           <div class="info">
             <div class="title">${facility.facilityName}</div>
-            <div class="contant">&#127970;Levels:..</div>
+            <div class="contant">&#127970;No.Of Levels:${facility.total_Levels}</div>
           </div>
         </div>
       </div>      
@@ -343,15 +347,7 @@ export class MapComponent implements OnInit {
       this.facilitymarker.addTo(this.map).show();
       this.facilitymarker.on('click',(e:any)=>{
         console.log(e.target.options.id,"e.target.options")
-        // this.map.getLayers().forEach((geo:any) => {
-         
-        //   geo._geoList.forEach((items:any,index:any) => {
-        //     console.log(items,"inside facility marker click")
-        //     // if(items._jsonType=="Marker" && items.options.id){
-        //     //   geo._geoList[index].remove()
-        //     // }
-        //   });
-        // })
+        this.sitemarker.setContent('')
         this.siteonboarding.obtainedLevelDetails.subscribe((data:any)=>{
           console.log(data,"data ")
           if(data){
@@ -366,7 +362,7 @@ export class MapComponent implements OnInit {
           }
         })
         this.levelName=this.selectedLevels[0].levelName;
-       
+       (document.getElementById('facilityMarker')as HTMLElement).style.display ='none';
       this.facilitymarker.remove();
       })
     });
@@ -573,6 +569,7 @@ export class MapComponent implements OnInit {
                 }, {
                   duration: 1000
                 })
+                this.map.removeBaseLayer();
               }).on('contextmenu',(e)=>{
                console.log(e)
                 this.layer.getGeometries().forEach((geo:any,index:any) => {
@@ -611,14 +608,12 @@ export class MapComponent implements OnInit {
   }
   getAllLevels(){
     this.siteonboarding.getAllLevels().subscribe((response:any)=>{
-      console.log(response,":::loading  levels:::")
       if(response){
       this.siteonboarding.saveAllLevelDetails(response);
       }
     });
   }
   getAllFacilities(){
-    console.log(":::loading  Facilities::::")
     this.siteonboarding.getAllFacilities().subscribe((response:any)=>{
       if(response){
       this.siteonboarding.saveAllFacilityDetails(response);

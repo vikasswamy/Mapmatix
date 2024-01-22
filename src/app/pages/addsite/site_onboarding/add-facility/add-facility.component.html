@@ -6,95 +6,176 @@
     (ngSubmit)="f.form.valid"
    
   >
-    <div class="form-group">
-      <label>Site Name</label>
-      <mat-form-field appearance="outline">
-        <mat-select class="form-control" name="sitename" #sitename="ngModel" [(ngModel)]="form.siteId" (selectionChange)="selectedSite(sitename.value)" required [ngClass]="{ 'is-invalid': f.submitted && sitename.errors }" >
-          <mat-option value="">Select Site</mat-option>
-          <mat-option *ngFor="let item of sitesData" [value]="item.siteId">{{ item.siteName }}</mat-option>
-      </mat-select >
-      
-      </mat-form-field>
-      <div *ngIf="f.submitted && sitename.errors" class="invalid-feedback">
-        <div *ngIf="sitename.errors['required']">Sitename is required</div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        
       </div>
-    </div>
-    <div class="form-group">
-      <label>Facility Name</label>
-
-      <mat-form-field appearance="outline">
-        <input  matInput
-        type="text"
-        class="form-control"
-        name="facilityname"
-        [disabled]="!form.siteId"
-        [(ngModel)]="form.facilityName"
-        required
-        #facilityname="ngModel"
-        [ngClass]="{ 'is-invalid': f.submitted && facilityname.errors }"
-      />
-      </mat-form-field>
-      
-      <div *ngIf="f.submitted && facilityname.errors" class="invalid-feedback">
-        <div *ngIf="facilityname.errors['required']">Facility name is required</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="buttongroup">
-        <div class="image-upload">
-          <label for="file-input">
-           <mat-icon>cloud_upload</mat-icon>
-          </label>
-          <p class="note"><span style="font-size: 12px;">(Supported File Formats:*/.png,.jpg,JPEG)</span></p>
-          <input [disabled]="!form.facilityName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"  accept="..jpg,.img,.png,.JPEG,.JPG" />
-      </div> 
-      
-      
-      <a *ngIf="form.imageUrl" (click)="redirect()">click here to locate from map <mat-icon matSuffix>location_on</mat-icon></a>
-
-
-      <mat-form-field appearance="outline">
-        <input  matInput
-        [disabled]="!form.facilityName"
-        type="text"
-        class="form-control"
-        name="Location"
-        placeholder="Enter Coordinate Ex:[Lan, Lat]"
-        [(ngModel)]="lanlat"
-        required
-        #location="ngModel"
-        (change)="locationchange($event)"
-        [ngClass]="{ 'is-invalid': f.submitted && location.errors }"
-      />
-    </mat-form-field>
-      
-      
-      <div *ngIf="f.submitted && location.errors" class="invalid-feedback">
-        <div *ngIf="location.errors['required']">location is required</div>
-        <div *ngIf="location.errors['minlength']">
-          location must me geometry
-        </div>
-        <div *ngIf="location.errors['maxlength']">
-          location must me geometry
+      <div class="form-group">
+        <label>Site Name</label>
+        <mat-form-field appearance="outline">
+          <mat-select class="form-control" name="sitename" #sitename="ngModel" [(ngModel)]="form.siteId" (selectionChange)="selectedSite(sitename.value)" required [ngClass]="{ 'is-invalid': f.submitted && sitename.errors }" >
+            <mat-option value="">Select Site</mat-option>
+            <mat-option *ngFor="let item of sitesData" [value]="item.siteId">{{ item.siteName }}</mat-option>
+        </mat-select >
+        
+        </mat-form-field>
+        <div *ngIf="f.submitted && sitename.errors" class="invalid-feedback">
+          <div *ngIf="sitename.errors['required']">Sitename is required</div>
         </div>
       </div>
+      <div class="form-group">
+        <label>Facility Name</label>
+  
+        <mat-form-field appearance="outline">
+          <input  matInput
+          type="text"
+          class="form-control"
+          name="facilityname"
+          [disabled]="!form.siteId"
+          [(ngModel)]="form.facilityName"
+          required
+          #facilityname="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && facilityname.errors }"
+        />
+        </mat-form-field>
+        
+        <div *ngIf="f.submitted && facilityname.errors" class="invalid-feedback">
+          <div *ngIf="facilityname.errors['required']">Facility name is required</div>
+        </div>
       </div>
+      <div class="form-group">
+        <label>No. of Levels in Facility </label>
+  
+        <mat-form-field appearance="outline">
+          <input  matInput
+          type="number"
+          class="form-control"
+          name="MaxLevels"
+          [disabled]="!form.facilityName"
+          [(ngModel)]="form.MaxLevels"
+          required
+          #MaxLevels="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && MaxLevels.errors }"
+        />
+        </mat-form-field>
+        
+        <div *ngIf="f.submitted && MaxLevels.errors" class="invalid-feedback">
+          <div *ngIf="MaxLevels.errors['required']">No. of Levels  required</div>
+        </div>
+      </div>
+      
+  
+    </div>
      
-    </div>
+      <div class="col-md-6">
+       
+        
+        <div class="form-group">
+          <label>Working Hours From</label>
+    
+          <mat-form-field appearance="outline">
+            <input  matInput
+            type="time"
+            class="form-control"
+            name="workingHrs_Froms"
+            [disabled]="!form.facilityName"
+            [(ngModel)]="form.HrsFrom"
+            required
+            #workingHrs_Froms="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && workingHrs_Froms.errors }"
+          />
+          </mat-form-field>
+          
+          <div *ngIf="f.submitted && workingHrs_Froms.errors" class="invalid-feedback">
+            <div *ngIf="workingHrs_Froms.errors['required']">Working Hours From required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Working Hours To</label>
+    
+          <mat-form-field appearance="outline">
+            <input  matInput
+            type="time"
+            class="form-control"
+            name="workingHrs_To"
+            [disabled]="!form.facilityName"
+            [(ngModel)]="form.HrsTo"
+            required
+            #workingHrs_To="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && workingHrs_To.errors }"
+          />
+          </mat-form-field>
+          
+          <div *ngIf="f.submitted && workingHrs_To.errors" class="invalid-feedback">
+            <div *ngIf="workingHrs_To.errors['required']">Working Hours To required</div>
+          </div>
+        </div>
+        <div class="form-group">
+            <div class="buttongroup">
+              <label>Location </label>     <a *ngIf="form.imageUrl" (click)="redirect()">click here to locate from map </a>  
+
+            </div>
+  
+
+          <mat-form-field appearance="outline">
+
+            <input  matInput
+            [disabled]="!form.facilityName"
+            type="text"
+            class="form-control"
+            name="Location"
+            placeholder="Enter Coordinate Ex:[Lan, Lat]"
+            [(ngModel)]="lanlat"
+            required
+            #location="ngModel"
+            (change)="locationchange($event)"
+            [ngClass]="{ 'is-invalid': f.submitted && location.errors }"
+          />
+        </mat-form-field>
+          
+          
+          <div *ngIf="f.submitted && location.errors" class="invalid-feedback">
+            <div *ngIf="location.errors['required']">location is required</div>
+            <div *ngIf="location.errors['minlength']">
+              location must me geometry
+            </div>
+            <div *ngIf="location.errors['maxlength']">
+              location must me geometry
+            </div>
+          </div>
+          
+         
+        </div>
+        
+
+          
+        
+        
+      </div>
+  </div>
+ 
+  <div class="buttongroup"> 
+    <div class="image-upload">
+      <label for="file-input">
+       <mat-icon>cloud_upload</mat-icon><span style="font-size: 12px;">(Supported File Formats:*/.png,.jpg,JPEG)</span>
+      </label>
+      
+      <input [disabled]="!form.facilityName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"  accept="..jpg,.img,.png,.JPEG,.JPG" />
+  </div>
+    <button [disabled]="!lanlat"  type="submit" (click)="onSubmit()" color="primary" mat-raised-button >Submit</button>
+  <button
+  mat-raised-button 
+    type="button"
+    (click)="onReset(f)"
+    color="warn"
+  >
+    Reset
+  </button>
+
+  </div>
 
 
-    <div class="buttongroup"> 
-      <button [disabled]="!lanlat"  type="submit" (click)="onSubmit()" color="primary" mat-raised-button >Submit</button>
-    <button
-    mat-raised-button 
-      type="button"
-      (click)="onReset(f)"
-      color="warn"
-    >
-      Reset
-    </button>
-
-    </div>
+    
   </form>
 </div>

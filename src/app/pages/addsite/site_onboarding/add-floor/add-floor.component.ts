@@ -28,6 +28,8 @@ export class AddFloorComponent implements OnInit {
     facilityId: '',
     levelName: '',
     fileUrl: '',
+    capacity:0,
+    Max_capacity:0
   };
   facilityName: string;
   allFacilities: any = [];

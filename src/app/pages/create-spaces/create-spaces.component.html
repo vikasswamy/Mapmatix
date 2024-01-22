@@ -75,6 +75,19 @@
                         
                       /> 
                       </mat-form-field>
+                      <label> Space Capacity</label>
+                      <mat-form-field appearance="outline">
+                          
+                      <input matInput
+                      type="text"
+                      class="form-control"
+                      name="Capacity"
+                      [(ngModel)]="subpanel.capacity"
+                      required
+                      #Capacity="ngModel"
+                      
+                    /> 
+                    </mat-form-field>
                          </form>
                       </mat-expansion-panel>
                     </mat-accordion>

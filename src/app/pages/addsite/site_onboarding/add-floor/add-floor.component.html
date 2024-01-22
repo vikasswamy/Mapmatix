@@ -23,7 +23,7 @@
       <label>Facility Name</label>
       <mat-form-field appearance="outline">
         <mat-select  [disabled]="!form.siteId" class="form-control" name="facilityname" #facilityname="ngModel" (selectionChange)="selectedFacility(facilityname.value)" [(ngModel)]="form.facilityId" required [ngClass]="{ 'is-invalid': f.submitted && facilityname.errors }" >
-          <mat-option [value]="">Select Level</mat-option>
+          <mat-option [value]="">Select Facility</mat-option>
 
           <mat-option *ngFor="let m of facilityData" [value]="m.facilityId">{{ m.facilityName }}</mat-option>
        </mat-select >
@@ -54,19 +54,52 @@
     </div>
     <div class="form-group">
       <div class="buttongroup">
-        <div class="image-upload">
-          <label for="file-input">
-           <mat-icon>cloud_upload</mat-icon>
-          </label>
-          <p class="note"><span style="font-size: 12px;">(Supported File Formats:*/geojson,.png,.jpg,JPEG)</span></p>
-          <input [disabled]="!form.levelName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"   accept=".geojson,.jpg,.img,.png,.JPEG" />
-      </div> 
-    
+         <div class="col">
+          <label>Capacity </label>
+  
+          <mat-form-field appearance="outline">
+            <input  matInput
+            type="number"
+            class="form-control"
+            name="capacity"
+            [disabled]="!form.levelName"
+            [(ngModel)]="form.capacity"
+            required
+            #capacity="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && capacity.errors }"
+          />
+          </mat-form-field>
+         </div>
+         <div class="col">
+          <label>Max Capacity </label>
+  
+          <mat-form-field appearance="outline">
+            <input  matInput
+            type="number"
+            class="form-control"
+            name="Max_capacity"
+            [disabled]="!form.levelName"
+            [(ngModel)]="form.Max_capacity"
+            required
+            #Max_capacity="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && Max_capacity.errors }"
+          />
+          </mat-form-field>
+         </div>
       </div>
-     
+      <div *ngIf="f.submitted && capacity.errors && Max_capacity" class="invalid-feedback">
+        <div *ngIf="capacity.errors['required'] && Max_capacity.errors['required']">Capacity & Max-capacity required</div>
+      </div>
     </div>
    
     <div class="buttongroup"> 
+      <div class="image-upload">
+        <label for="file-input">
+         <mat-icon>cloud_upload</mat-icon>
+        </label>
+       <span style="font-size: 12px;">(Supported File Formats:*/geojson,.png,.jpg,JPEG)</span>
+        <input [disabled]="!form.levelName"  id="file-input" type="file" class="upload" (change)="fileUpload($event.target.files[0])"   accept=".geojson,.jpg,.img,.png,.JPEG" />
+    </div>
       <button [disabled]="!form.fileUrl" (click)="onSubmit()" type="submit" color="primary" mat-raised-button >Submit</button>
     <button
     mat-raised-button 

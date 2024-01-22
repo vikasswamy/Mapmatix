@@ -146,22 +146,47 @@ export class CreateSpacesComponent implements OnInit {
        map = new maptalks.Map("createspace", {
       center:mapcenter,
       zoom: mapZoom,
+      
        minZoom: 2,
       pitch: 6,
-      baseLayer: new maptalks.TileLayer("base", {
-        urlTemplate:
-          "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
-        subdomains: ["a", "b", "c", "d"],
-        attribution:
+      layerSwitcherControl: {
+        'position'  : {'top': '20', 'right': '750'},
+        // title of base layers
+        
+        'baseTitle' : 'Base Layers',
+        // title of layers
+        'overlayTitle' : 'Layers',
+        'repeatWorld' :false,
+        'excludeLayers' : ['vector'],
+        // css class of container element, maptalks-layer-switcher by default
+        'containerClass' : 'maptalks-layer-switcher'
+      },
+      baseLayer: new maptalks.GroupTileLayer('Base TileLayer', [
+       
+        new maptalks.TileLayer('Carto light',{
+          'visible' : true,
+          repeatWorld :false,
+          'urlTemplate': 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          'subdomains'  : ['a','b','c','d']
+        }),
+        
+        new maptalks.TileLayer('Satellite',{
+          'visible' : false,
+          repeatWorld :false,
+          'urlTemplate': 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+          subdomains: ['mt0','mt1','mt2','mt3'],
+          attribution:
           '© <a href="http://osm.org">OpenStreetMap</a>  contributors, © <a href="https://carto.com/">CARTO</a> ',
-      }),
+        })
+      ])
+     
       
     });
    
     var layer:any = new maptalks.VectorLayer('vector').setOptions({
       editable : true,
     }).addTo(map);
-
+    
     this.siteonboarding.obtainedspaceDetails.subscribe((data:any)=>{
       map.getLayers().forEach((geo:any) => {
         geo._geoList.forEach((items:any,index:any) => {
@@ -302,6 +327,7 @@ export class CreateSpacesComponent implements OnInit {
               Site_Id:self.Site_Id,
               spaceName: '',
               spaceType: '',
+              capacity:0,
               spacelocation: JSON.stringify(parsedObject),
             }]
           }
