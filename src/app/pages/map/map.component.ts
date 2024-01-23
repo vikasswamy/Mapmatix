@@ -239,8 +239,9 @@ export class MapComponent implements OnInit {
             if(facility.Site_Id == e.target.options.id ){
               this.selectedsiteFacilities.push(data[index]);
             }
-          });
-            console.log(this.selectedsiteFacilities,"matched facilities")
+          });               
+        })
+        console.log(this.selectedsiteFacilities,"matched facilities")
                 this.sitename= e.target.options.name;
                  this.gotofacilities(this.selectedsiteFacilities);
                 
@@ -248,9 +249,6 @@ export class MapComponent implements OnInit {
                //console.log(e.target.getContent())
                  //(document.getElementById('sitemarker')as HTMLElement).innerHTML=''; 
                  e.target.remove() ;
-                
-        })
-       
       })
      
     });
@@ -356,11 +354,12 @@ export class MapComponent implements OnInit {
                   this.selectedLevels.push(data[j]);
                 }
             });
-            console.log(this.selectedLevels)
-                    this.getpolygonsdata(e.target._coordinate)
+        
           }
-        })
+        });
         this.levelName=this.selectedLevels[0].levelName;
+        this.getpolygonsdata(e.target._coordinate);
+       
        (document.getElementById('facilityMarker')as HTMLElement).style.display ='none';
       this.facilitymarker.remove();
       })
