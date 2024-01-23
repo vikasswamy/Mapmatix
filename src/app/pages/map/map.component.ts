@@ -74,7 +74,7 @@ export class MapComponent implements OnInit {
   sitename: any;
   sitesdata: any=[];
   constructor(
-    public dialog: MatDialog,private http: HttpClient,
+    public dialog: MatDialog,private http: HttpClient,public snackBar: MatSnackBar,
     private router: Router,
     private siteonboarding : SiteonboardingService
   ) { 
@@ -240,8 +240,8 @@ export class MapComponent implements OnInit {
               this.selectedsiteFacilities.push(data[index]);
             }
           });
+            console.log(this.selectedsiteFacilities,"matched facilities")
                 this.sitename= e.target.options.name;
-                this.facilityName=this.selectedsiteFacilities[0].facilityName;
                  this.gotofacilities(this.selectedsiteFacilities);
                 
               //this.sitemarker.setContent('');
@@ -345,20 +345,19 @@ export class MapComponent implements OnInit {
       }
       this.facilitymarker= new maptalks.ui.UIMarker(facility.facilitylocation.coordinates,customoptions);
       this.facilitymarker.addTo(this.map).show();
+    
       this.facilitymarker.on('click',(e:any)=>{
-        console.log(e.target.options.id,"e.target.options")
-        this.sitemarker.setContent('')
+        this.facilityName=e.target.options.name;
+        this.sitemarker.setContent('');
         this.siteonboarding.obtainedLevelDetails.subscribe((data:any)=>{
-          console.log(data,"data ")
           if(data){
             data.forEach((lvl:any,j:any) => {
                 if(lvl.Facility_Id==e.target.options.id){
                   this.selectedLevels.push(data[j]);
-                
                 }
             });
             console.log(this.selectedLevels)
-                    this.getpolygonsdata()
+                    this.getpolygonsdata(e.target._coordinate)
           }
         })
         this.levelName=this.selectedLevels[0].levelName;
@@ -376,6 +375,13 @@ export class MapComponent implements OnInit {
     });
     
   }
+  opentoster(message:any,duration:any){
+    this.snackBar.open(message, "close", {
+      duration: duration,
+      verticalPosition: 'top'
+ 
+  })
+    }
   getspaceIdsbyId(levelId:any,altitude:any){
     this.Devicescentroid=[];
     this.showicons=true;
@@ -509,7 +515,7 @@ export class MapComponent implements OnInit {
       )
     });
   }
-  getpolygonsdata(){
+  getpolygonsdata(center:any){
     let links:any='';
     function sortFunction(a,b){  
       var dateA = new Date(a.createdAt).getTime();
@@ -517,93 +523,98 @@ export class MapComponent implements OnInit {
       return dateA > dateB ? 1 : -1;  
   }; 
   this.selectedLevels.sort(sortFunction);
- 
+  console.log(this.selectedLevels,"this.selectedLevels")
+
     this.selectedLevels.forEach((element:any,l:any) => {
-      console.log(element,"element")
         if(element.fileUrl.includes('.geojson')){
-          links=this.selectedLevels[l].fileUrl
+          links=this.selectedLevels[l].fileUrl;
         }else{
            links = `https://storagesmartroute27.blob.core.windows.net/filesupload/${this.sitename}/${this.facilityName.replace(/\s+/g, '')}/${element.levelName.replace(/\s+/g, '')}/geojson/${element.levelName.replace(/\s+/g, '')+'.'+'geojson'}`;
+        
         }
-        console.log(links," links ")
-        this.http.get(String(links)).subscribe((response:any) => {
-          this.showRefresh=true
-          console.log(response,"geojson data");
-          var coordinates:any
-          response.features.forEach((item:any) => {
-           if(item.geometry.type=="Polygon"){
-            coordinates=item.geometry.coordinates
-          }else if(item.geometry.type=="MultiPolygon"){
-            coordinates=item.geometry.coordinates[0][0]
-          }
-
-            this.layer.setOptions({enableAltitude:true}).addGeometry( new maptalks.Polygon(coordinates, {
-                visible: true,
-                editable: true,
-                cursor: "pointer",
-                draggable: false,
-                dragShadow: false, // display a shadow during dragging
-                drawOnAxis: null, // force dragging stick on a axis, can be: x, y
-                symbol: {
-                  lineColor: "#34495e",
-                  lineWidth: 0.5,
-                  polygonFill: "rgb(135,196,240)",
-                  polygonOpacity: 0.6,
-                },
-                properties: {
-                  id: item.properties.levelId,
-                  levelId:item.properties.levelId,
-                  name: item.properties.levelId,
-                  altitude: l* 4,
-                  visible: true,
-                },
-              }).on('click',(e)=>{
-                console.log(e);
-                this.focuspoint=e.coordinate
-                this.getspaceIdsbyId(e.target.properties.id,e.target.properties.altitude);              
-                this.map.animateTo({
-                  center: e.coordinate,
-                  zoom: 23,
-                  pitch: 0,
-                  bearing: 0
-                }, {
-                  duration: 1000
-                })
-                this.map.removeBaseLayer();
-              }).on('contextmenu',(e)=>{
-               console.log(e)
-                this.layer.getGeometries().forEach((geo:any,index:any) => {
-                  if((geo.type =="Point") &&  (geo.properties.deviceType)){
-                    this.layer.getGeometries()[index].setOptions({visible:false})
-                  }
-                  else if(geo.type =="Polygon"){
-                    geo.setOptions({visible:true})
-                  }
-                 
-                });
-                this.map.animateTo({
-                  center: e.coordinate,
-                  zoom: 21,
-                  pitch: 55,
-                  bearing: 0
-                }, {
-                  duration: 1000
-                })
-              })
-              
-              )
-            
-          });
-        });
+        this.createpolygons(links,l)
+        
         this.map.animateTo({
-          center: this.selectedsiteFacilities[0].facilitylocation.coordinates,
+          center: center,
           zoom: 20.5,
           pitch: 55,
           bearing: 0
         }, {
           duration: 1000
         })
-        this.facilitymarker.remove()
+        this.facilitymarker.remove();
+    });
+  }
+  createpolygons(links:any,l:any){
+    console.log(links);
+    this.http.get(String(links)).subscribe((response:any) => {
+      this.showRefresh=true
+      console.log(response,"geojson data");
+      var coordinates:any
+      response.features.forEach((item:any) => {
+       if(item.geometry.type=="Polygon"){
+        coordinates=item.geometry.coordinates
+      }else if(item.geometry.type=="MultiPolygon"){
+        coordinates=item.geometry.coordinates[0][0]
+      }
+
+        this.layer.setOptions({enableAltitude:true}).addGeometry( new maptalks.Polygon(coordinates, {
+            visible: true,
+            editable: true,
+            cursor: "pointer",
+            draggable: false,
+            dragShadow: false, // display a shadow during dragging
+            drawOnAxis: null, // force dragging stick on a axis, can be: x, y
+            symbol: {
+              lineColor: "#34495e",
+              lineWidth: 0.5,
+              polygonFill: "rgb(135,196,240)",
+              polygonOpacity: 0.6,
+            },
+            properties: {
+              id: item.properties.levelId,
+              levelId:item.properties.levelId,
+              name: item.properties.levelId,
+              altitude: l* 4,
+              visible: true,
+            },
+          }).on('click',(e)=>{
+            console.log(e);
+            this.focuspoint=e.coordinate
+            this.getspaceIdsbyId(e.target.properties.id,e.target.properties.altitude);              
+            this.map.animateTo({
+              center: e.coordinate,
+              zoom: 23,
+              pitch: 0,
+              bearing: 0
+            }, {
+              duration: 1000
+            })
+            this.map.removeBaseLayer();
+          }).on('contextmenu',(e)=>{
+           console.log(e)
+            this.layer.getGeometries().forEach((geo:any,index:any) => {
+              if((geo.type =="Point") &&  (geo.properties.deviceType)){
+                this.layer.getGeometries()[index].setOptions({visible:false})
+              }
+              else if(geo.type =="Polygon"){
+                geo.setOptions({visible:true})
+              }
+             
+            });
+            this.map.animateTo({
+              center: e.coordinate,
+              zoom: 21,
+              pitch: 55,
+              bearing: 0
+            }, {
+              duration: 1000
+            })
+          })
+          
+          )
+        
+      });
     });
   }
   getAllLevels(){
@@ -621,7 +632,9 @@ export class MapComponent implements OnInit {
     });
   }
   refreshpage(event:any){
-    this.ngOnInit()
+    this.map.removeLayer('vector')
+    this.ngOnInit();
+
   }
  openDailog(event:any){
   this.dialog.open(AddbuildingpopupComponent, {
